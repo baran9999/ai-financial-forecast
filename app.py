@@ -79,7 +79,8 @@ user_prompt = st.text_input("Ask me something about the forecast (e.g. 'What hap
 
 if user_prompt:
     with st.spinner("Thinking like a financial analyst..."):
-        client = openai.OpenAI()  # new SDK format
+        client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
+
 
         prompt = f"""
         You are an AI financial analyst. The user is adjusting assumptions in a subscription forecast model.
