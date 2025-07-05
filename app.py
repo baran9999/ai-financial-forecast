@@ -44,14 +44,16 @@ st.markdown("""
 
         /* Limit chart width tighter */
         .chart-container {
-            max-width: 420px;
+            max-width: 380px;
             margin: auto;
+        }
+
+        /* Shrink image padding */
+        .element-container iframe, .element-container canvas {
+            max-height: 200px !important;
         }
     </style>
 """, unsafe_allow_html=True)
-
-
-# --- rest of your code remains unchanged ---
 
 
 def simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost):
