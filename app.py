@@ -36,7 +36,8 @@ st.set_page_config(page_title="Life360 Forecast Copilot", layout="wide")
 # --- Header with Life360 logo ---
 st.markdown("""
     <div style='display: flex; align-items: center; justify-content: space-between; background-color: #7C3AED; padding: 1rem 2rem; border-radius: 8px; margin-bottom: 1rem;'>
-        <img src='https://cdn.life360.com/img/Life360_Logo.png' alt='Life360 Logo' style='height: 48px;'>
+<img src='https://assets.brandfetch.io/idyIparpCK/idzUBIEx1G.svg' alt='Life360 Logo' style='height: 40px;'>
+
         <h1 style='color: white; font-size: 28px; margin: 0;'>Forecast Copilot Dashboard</h1>
     </div>
 """, unsafe_allow_html=True)
