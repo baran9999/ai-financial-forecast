@@ -42,13 +42,16 @@ st.markdown("""
             border-radius: 6px;
         }
 
-        /* Limit chart width */
+        /* Limit chart width tighter */
         .chart-container {
-            max-width: 600px;
+            max-width: 420px;
             margin: auto;
         }
     </style>
 """, unsafe_allow_html=True)
+
+
+# --- rest of your code remains unchanged ---
 
 
 def simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost):
