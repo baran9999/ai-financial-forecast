@@ -101,7 +101,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 # --- Chart ---
 st.markdown("<div style='background-color: #F9FAFB; padding: 1rem; border-radius: 10px; margin-top: 1rem;'>", unsafe_allow_html=True)
 st.subheader("Monthly Revenue and Profit")
-fig, ax = plt.subplots(figsize=(8, 4))
+fig, ax = plt.subplots(figsize=(6, 2.8))  # Smaller, cleaner chart
 ax.plot(df["Month"], df["Revenue"], label="Revenue", color="#7C3AED")
 ax.plot(df["Month"], df["Profit"], label="Profit", color="#4B5563")
 plt.xticks(rotation=45)
