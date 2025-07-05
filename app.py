@@ -34,12 +34,8 @@ def simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost):
 st.set_page_config(page_title="Life360 Forecast Copilot", layout="wide")
 
 # --- Header with Life360 logo ---
-st.markdown("""
-    <div style='display: flex; align-items: center; justify-content: space-between; background-color: #7C3AED; padding: 1rem 2rem; border-radius: 8px; margin-bottom: 1rem;'>
-        <img src='Life360_Logo_1.png' alt='Life360 Logo' style='height: 40px;'>
-        <h1 style='color: white; font-size: 28px; margin: 0;'>Forecast Copilot Dashboard</h1>
-    </div>
-""", unsafe_allow_html=True)
+st.markdown("<h1 style='color:#7C3AED; font-size:32px;'>Forecast Copilot Dashboard</h1>", unsafe_allow_html=True)
+
 
 
 # --- Sidebar ---
