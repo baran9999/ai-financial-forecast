@@ -3,12 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import openai
 
-# Load OpenAI API key securely
 client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 
-# ---------------------------
-# Forecast Simulation Logic
-# ---------------------------
 def simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost):
     months = pd.date_range("2025-01-01", periods=12, freq='MS')
     data = []
@@ -35,68 +31,61 @@ def simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost):
 
     return pd.DataFrame(data)
 
-# ---------------------------
-# Streamlit UI
-# ---------------------------
-st.set_page_config(page_title="AI Forecast Copilot", layout="wide")
-st.title("🤖 AI Foresight Copilot — Dynamic Financial Forecasting")
+st.set_page_config(page_title="Life360 Forecast Copilot", layout="wide")
 
-# Sidebar sliders
-st.sidebar.header("📊 Adjust Assumptions")
+st.markdown("""
+    <h1 style='color:#7C3AED; font-size: 36px;'>Life360 Forecast Copilot</h1>
+    <p style='font-size: 16px;'>Interactive forecasting model with AI-powered scenario insights.</p>
+""", unsafe_allow_html=True)
+
+st.sidebar.header("Adjust Forecast Assumptions")
 start_subs = st.sidebar.number_input("Starting Subscribers", value=50000)
 growth = st.sidebar.slider("Monthly Growth Rate (%)", 0.0, 10.0, 5.0) / 100
 churn = st.sidebar.slider("Churn Rate (%)", 0.0, 10.0, 5.0) / 100
 price = st.sidebar.number_input("Subscription Price ($)", value=12.99)
-var_cost = st.sidebar.number_input("Variable Cost per Sub ($)", value=1.25)
+var_cost = st.sidebar.number_input("Variable Cost per Subscriber ($)", value=1.25)
 fixed_cost = st.sidebar.number_input("Fixed Monthly Cost ($)", value=500000.0)
 
-# Run simulation
 df = simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost)
 
-# KPI Metrics
-st.subheader("📈 Key Metrics")
+st.subheader("Key Financial Metrics")
 col1, col2, col3 = st.columns(3)
 col1.metric("Total Revenue", f"${df['Revenue'].sum():,.0f}")
 col2.metric("Total Profit", f"${df['Profit'].sum():,.0f}")
-col3.metric("End Subscribers", f"{int(df['Subscribers'].iloc[-1]):,}")
+col3.metric("Ending Subscribers", f"{int(df['Subscribers'].iloc[-1]):,}")
 
-# Chart
-st.subheader("📊 Monthly Revenue & Profit")
-fig, ax = plt.subplots()
-ax.plot(df["Month"], df["Revenue"], label="Revenue")
-ax.plot(df["Month"], df["Profit"], label="Profit")
+st.subheader("Monthly Revenue and Profit")
+fig, ax = plt.subplots(figsize=(8, 4))  # ✅ Smaller graph size
+ax.plot(df["Month"], df["Revenue"], label="Revenue", color="#7C3AED")
+ax.plot(df["Month"], df["Profit"], label="Profit", color="#4B5563")
 plt.xticks(rotation=45)
 ax.legend()
 st.pyplot(fig)
 
-# Data Table
-st.subheader("📄 Monthly Breakdown")
-st.dataframe(df)
+st.subheader("Monthly Forecast Data")
+formatted_df = df.copy()
+dollar_cols = ["Revenue", "Variable Costs", "Fixed Costs", "Total Costs", "Profit"]
+for col in dollar_cols:
+    formatted_df[col] = formatted_df[col].map("${:,.2f}".format)  # ✅ Format $ cols
+st.dataframe(formatted_df)
 
-# ---------------------------
-# AI Forecast Copilot
-# ---------------------------
-st.subheader("🧠 AI Forecast Copilot")
+st.subheader("Forecast Copilot")
 
-user_prompt = st.text_input("Ask me something about the forecast (e.g. 'What happens if churn is 8%?')")
+user_prompt = st.text_input("Ask a forecasting question (e.g. 'What happens if churn increases to 8% in Q3?')")
 
 if user_prompt:
-    with st.spinner("Thinking like a financial analyst..."):
+    with st.spinner("Generating AI insight..."):
         try:
             prompt = f"""
-            You are an AI financial analyst. The user is adjusting assumptions in a subscription forecast model.
-
-            Use this current data to answer:
+            You are an AI financial analyst. Provide a professional forecast insight based on:
             - Starting Subscribers: {start_subs}
             - Monthly Growth Rate: {growth:.2%}
             - Monthly Churn Rate: {churn:.2%}
             - Price: ${price}
             - Variable Cost per Sub: ${var_cost}
-            - Fixed Cost per Month: ${fixed_cost}
+            - Fixed Monthly Cost: ${fixed_cost}
 
-            The user asked: {user_prompt}
-
-            Respond with a clear financial insight or scenario projection, based on those numbers.
+            Question: {user_prompt}
             """
 
             response = client.chat.completions.create(
@@ -107,11 +96,14 @@ if user_prompt:
                 ]
             )
 
-            st.success(response.choices[0].message.content)
+            st.write(response.choices[0].message.content)
 
         except openai.RateLimitError:
-            st.error("🚫 You're hitting the OpenAI rate limit. Please wait a bit and try again.")
+            st.error("Rate limit reached. Please try again shortly.")
         except Exception as e:
-            st.error(f"❌ Something went wrong: {e}")
+            st.error(f"An error occurred: {e}")
 
-st.caption("Made for Life360 ✨ by Sharan Karunaagaran")
+st.markdown("""
+    <hr style="margin-top: 30px;">
+<p style='text-align: right; font-size: 13px; color: #999999;'>For Life360 — made by Sharan Karunaagaran</p>
+""", unsafe_allow_html=True)
