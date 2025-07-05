@@ -73,16 +73,14 @@ st.pyplot(fig)
 # Table
 st.subheader("📄 Monthly Breakdown")
 st.dataframe(df)
-
-# ---------------------------
-# AI Forecast Copilot
-# ---------------------------
 st.subheader("🧠 AI Forecast Copilot")
 
 user_prompt = st.text_input("Ask me something about the forecast (e.g. 'What happens if churn is 8%?')")
 
 if user_prompt:
     with st.spinner("Thinking like a financial analyst..."):
+        client = openai.OpenAI()  # new SDK format
+
         prompt = f"""
         You are an AI financial analyst. The user is adjusting assumptions in a subscription forecast model.
 
@@ -98,17 +96,16 @@ if user_prompt:
 
         Respond with a clear financial insight or scenario projection, based on those numbers.
         """
-       client = openai.OpenAI()  # new SDK format
 
-response = client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {"role": "system", "content": "You're a financial forecasting assistant."},
-        {"role": "user", "content": prompt}
-    ]
-)
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You're a financial forecasting assistant."},
+                {"role": "user", "content": prompt}
+            ]
+        )
 
-st.success(response.choices[0].message.content)
+        st.success(response.choices[0].message.content)
 
 
 st.caption("Made for Life360 by Sharan Karunaagaran")
