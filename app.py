@@ -98,11 +98,17 @@ if user_prompt:
 
         Respond with a clear financial insight or scenario projection, based on those numbers.
         """
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "system", "content": "You're a financial forecasting assistant."},
-                      {"role": "user", "content": prompt}]
-        )
-        st.success(response['choices'][0]['message']['content'])
+       client = openai.OpenAI()  # new SDK format
+
+response = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "system", "content": "You're a financial forecasting assistant."},
+        {"role": "user", "content": prompt}
+    ]
+)
+
+st.success(response.choices[0].message.content)
+
 
 st.caption("Made for Life360 by Sharan Karunaagaran")
