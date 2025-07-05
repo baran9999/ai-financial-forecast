@@ -55,7 +55,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
+# --- Forecast Function ---
 def simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost):
     months = pd.date_range("2025-01-01", periods=12, freq='MS')
     data = []
@@ -82,13 +82,11 @@ def simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost):
 
     return pd.DataFrame(data)
 
-
+# --- Page Setup ---
 st.set_page_config(page_title="Life360 Forecast Copilot", layout="wide")
-
-# --- Header ---
 st.markdown("<h1 style='color:#7C3AED; font-size:32px;'>Forecast Copilot Dashboard</h1>", unsafe_allow_html=True)
 
-# --- Sidebar ---
+# --- Sidebar Inputs ---
 st.sidebar.header("Forecast Assumptions")
 start_subs = st.sidebar.number_input("Starting Subscribers", value=50000)
 growth = st.sidebar.slider("Monthly Growth Rate (%)", 0.0, 10.0, 5.0) / 100
@@ -97,10 +95,10 @@ price = st.sidebar.number_input("Subscription Price ($)", value=12.99)
 var_cost = st.sidebar.number_input("Variable Cost per Subscriber ($)", value=1.25)
 fixed_cost = st.sidebar.number_input("Fixed Monthly Cost ($)", value=500000.0)
 
-# --- Forecast Simulation ---
+# --- Generate Forecast ---
 df = simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost)
 
-# --- KPI Metrics ---
+# --- Key Metrics ---
 st.markdown("<div style='background-color: #EDE9FE; padding: 1rem; border-radius: 10px; margin-top: 1rem;'>", unsafe_allow_html=True)
 st.subheader("Key Financial Metrics")
 col1, col2, col3 = st.columns(3)
@@ -109,18 +107,19 @@ col2.metric("Total Profit", f"${df['Profit'].sum():,.0f}")
 col3.metric("Ending Subscribers", f"{int(df['Subscribers'].iloc[-1]):,}")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# --- Chart ---
+# --- Chart Section with Expander ---
 st.markdown("<div class='chart-container' style='background-color: #F9FAFB; padding: 1rem; border-radius: 10px; margin-top: 1rem;'>", unsafe_allow_html=True)
 st.subheader("Monthly Revenue and Profit")
-fig, ax = plt.subplots(figsize=(6, 2.8))  # Smaller chart
-ax.plot(df["Month"], df["Revenue"], label="Revenue", color="#7C3AED")
-ax.plot(df["Month"], df["Profit"], label="Profit", color="#4B5563")
-plt.xticks(rotation=45)
-ax.legend()
-st.pyplot(fig)
+with st.expander("Click to view chart"):
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.plot(df["Month"], df["Revenue"], label="Revenue", color="#7C3AED")
+    ax.plot(df["Month"], df["Profit"], label="Profit", color="#4B5563")
+    plt.xticks(rotation=45)
+    ax.legend()
+    st.pyplot(fig)
 st.markdown("</div>", unsafe_allow_html=True)
 
-# --- Data Table ---
+# --- Forecast Table ---
 st.markdown("<div style='margin-top: 1rem;'>", unsafe_allow_html=True)
 st.subheader("Monthly Forecast Table")
 formatted_df = df.copy()
@@ -133,7 +132,6 @@ st.markdown("</div>", unsafe_allow_html=True)
 # --- AI Forecast Copilot ---
 st.markdown("<div style='margin-top: 2rem;'>", unsafe_allow_html=True)
 st.subheader("AI Forecast Copilot")
-
 user_prompt = st.text_input("Ask a forecasting question (e.g. 'What happens if churn increases to 8% in Q3?')")
 
 if user_prompt:
