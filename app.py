@@ -5,6 +5,46 @@ import openai
 
 client = openai.OpenAI(api_key=st.secrets["openai"]["api_key"])
 
+# --- Brand Styling ---
+st.markdown("""
+    <style>
+        /* Purple slider and thumb */
+        .stSlider > div[data-baseweb="slider"] > div {
+            color: #7C3AED !important;
+        }
+        .stSlider > div[data-baseweb="slider"] span {
+            background-color: #7C3AED !important;
+        }
+
+        /* Sidebar background */
+        section[data-testid="stSidebar"] {
+            background-color: #F9F5FF;
+            padding: 2rem 1rem 1rem 1rem;
+        }
+
+        /* Sidebar header text */
+        .sidebar .sidebar-content h1,
+        .sidebar .sidebar-content h2,
+        .sidebar .sidebar-content h3 {
+            color: #7C3AED;
+        }
+
+        /* Inputs and labels */
+        .stNumberInput label, .stSlider label {
+            color: #1F2937 !important;
+            font-weight: 500;
+        }
+
+        /* Input boxes */
+        .stNumberInput input {
+            background-color: white;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 def simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost):
     months = pd.date_range("2025-01-01", periods=12, freq='MS')
     data = []
@@ -31,89 +71,11 @@ def simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost):
 
     return pd.DataFrame(data)
 
+
 st.set_page_config(page_title="Life360 Forecast Copilot", layout="wide")
 
-# --- Header with Life360 logo ---
+# --- Header ---
 st.markdown("<h1 style='color:#7C3AED; font-size:32px;'>Forecast Copilot Dashboard</h1>", unsafe_allow_html=True)
-# --- Brand Styling ---
-st.markdown("""
-    <style>
-        /* Purple slider and thumb */
-        .stSlider > div[data-baseweb="slider"] > div {
-            color: #7C3AED !important;
-        }
-        .stSlider > div[data-baseweb="slider"] span {
-            background-color: #7C3AED !important;
-        }
-
-        /* Sidebar background */
-        section[data-testid="stSidebar"] {
-            background-color: #F9F5FF;
-            padding: 2rem 1rem 1rem 1rem;
-        }
-
-        /* Sidebar header text */
-        .sidebar .sidebar-content h1,
-        .sidebar .sidebar-content h2,
-        .sidebar .sidebar-content h3 {
-            color: #7C3AED;
-        }
-
-        /* Inputs and labels */
-        .stNumberInput label, .stSlider label {
-            color: #1F2937 !important;
-            font-weight: 500;
-        }
-
-        /* Input boxes */
-        .stNumberInput input {
-            background-color: white;
-            border: 1px solid #D1D5DB;
-            border-radius: 6px;
-        }
-
-
-# --- Brand Styling ---
-st.markdown("""
-    <style>
-        /* Purple slider and thumb */
-        .stSlider > div[data-baseweb="slider"] > div {
-            color: #7C3AED !important;
-        }
-        .stSlider > div[data-baseweb="slider"] span {
-            background-color: #7C3AED !important;
-        }
-
-        /* Sidebar background */
-        section[data-testid="stSidebar"] {
-            background-color: #F9F5FF;
-            padding: 2rem 1rem 1rem 1rem;
-        }
-
-        /* Sidebar header text */
-        .sidebar .sidebar-content h1,
-        .sidebar .sidebar-content h2,
-        .sidebar .sidebar-content h3 {
-            color: #7C3AED;
-        }
-
-        /* Inputs and labels */
-        .stNumberInput label, .stSlider label {
-            color: #1F2937 !important;
-            font-weight: 500;
-        }
-
-        /* Input boxes */
-        .stNumberInput input {
-            background-color: white;
-            border: 1px solid #D1D5DB;
-            border-radius: 6px;
-        }
-
-    </style>
-""", unsafe_allow_html=True)
-
-
 
 # --- Sidebar ---
 st.sidebar.header("Forecast Assumptions")
@@ -124,6 +86,7 @@ price = st.sidebar.number_input("Subscription Price ($)", value=12.99)
 var_cost = st.sidebar.number_input("Variable Cost per Subscriber ($)", value=1.25)
 fixed_cost = st.sidebar.number_input("Fixed Monthly Cost ($)", value=500000.0)
 
+# --- Forecast Simulation ---
 df = simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost)
 
 # --- KPI Metrics ---
