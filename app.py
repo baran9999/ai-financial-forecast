@@ -35,6 +35,122 @@ st.set_page_config(page_title="Life360 Forecast Copilot", layout="wide")
 
 # --- Header with Life360 logo ---
 st.markdown("<h1 style='color:#7C3AED; font-size:32px;'>Forecast Copilot Dashboard</h1>", unsafe_allow_html=True)
+# --- Brand Styling ---
+st.markdown("""
+    <style>
+        /* Purple slider and thumb */
+        .stSlider > div[data-baseweb="slider"] > div {
+            color: #7C3AED !important;
+        }
+        .stSlider > div[data-baseweb="slider"] span {
+            background-color: #7C3AED !important;
+        }
+
+        /* Sidebar background */
+        section[data-testid="stSidebar"] {
+            background-color: #F9F5FF;
+            padding: 2rem 1rem 1rem 1rem;
+        }
+
+        /* Sidebar header text */
+        .sidebar .sidebar-content h1,
+        .sidebar .sidebar-content h2,
+        .sidebar .sidebar-content h3 {
+            color: #7C3AED;
+        }
+
+        /* Inputs and labels */
+        .stNumberInput label, .stSlider label {
+            color: #1F2937 !important;
+            font-weight: 500;
+        }
+
+        /* Input boxes */
+        .stNumberInput input {
+            background-color: white;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+        }
+
+    </style>
+""", unsafe_allow_html=True)
+🔥 What it does:
+Soft lavender sidebar background
+
+Purple slider and knob
+
+Clean white input boxes with rounded corners
+
+Better label spacing and color
+
+Let me know if you want:
+
+Section dividers or icons in the sidebar
+
+Subtle hover effects or toggle switches
+
+This sidebar’s clean now — but we can make it ✨sexy✨.
+
+
+
+
+
+
+You said:
+where do i put this
+
+
+ChatGPT said:
+Drop this right below your imports, at the very top of your app.py — like this:
+
+🔧 Example Placement:
+python
+Copy
+Edit
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import openai
+
+# --- Brand Styling ---
+st.markdown("""
+    <style>
+        /* Purple slider and thumb */
+        .stSlider > div[data-baseweb="slider"] > div {
+            color: #7C3AED !important;
+        }
+        .stSlider > div[data-baseweb="slider"] span {
+            background-color: #7C3AED !important;
+        }
+
+        /* Sidebar background */
+        section[data-testid="stSidebar"] {
+            background-color: #F9F5FF;
+            padding: 2rem 1rem 1rem 1rem;
+        }
+
+        /* Sidebar header text */
+        .sidebar .sidebar-content h1,
+        .sidebar .sidebar-content h2,
+        .sidebar .sidebar-content h3 {
+            color: #7C3AED;
+        }
+
+        /* Inputs and labels */
+        .stNumberInput label, .stSlider label {
+            color: #1F2937 !important;
+            font-weight: 500;
+        }
+
+        /* Input boxes */
+        .stNumberInput input {
+            background-color: white;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+        }
+
+    </style>
+""", unsafe_allow_html=True)
 
 
 
