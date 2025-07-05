@@ -72,45 +72,6 @@ st.markdown("""
             border-radius: 6px;
         }
 
-    </style>
-""", unsafe_allow_html=True)
-🔥 What it does:
-Soft lavender sidebar background
-
-Purple slider and knob
-
-Clean white input boxes with rounded corners
-
-Better label spacing and color
-
-Let me know if you want:
-
-Section dividers or icons in the sidebar
-
-Subtle hover effects or toggle switches
-
-This sidebar’s clean now — but we can make it ✨sexy✨.
-
-
-
-
-
-
-You said:
-where do i put this
-
-
-ChatGPT said:
-Drop this right below your imports, at the very top of your app.py — like this:
-
-🔧 Example Placement:
-python
-Copy
-Edit
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-import openai
 
 # --- Brand Styling ---
 st.markdown("""
