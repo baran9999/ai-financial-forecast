@@ -50,7 +50,7 @@ col3.metric("Avg Subscribers", f"{int(dashboard_df.iloc[2, 1]):,}")
 st.subheader("📊 Monthly Revenue & Profit")
 fig, ax = plt.subplots(figsize=(10, 4))
 ax.plot(model_df['Month'], model_df['Revenue'], label="Revenue")
-ax.plot(model_df['Month'], model_df['Profit   '], label="Profit")
+ax.plot(model_df['Month'], model_df['Profit'], label="Profit")  # ✅ FIXED HERE
 ax.set_xticklabels(model_df['Month'], rotation=45)
 ax.legend()
 st.pyplot(fig)
@@ -58,7 +58,5 @@ st.pyplot(fig)
 # Table
 st.subheader("📄 Monthly Breakdown")
 st.dataframe(model_df)
-
-
 
 st.caption("Made for Life360 by Sharan Karunaagaran")
