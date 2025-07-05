@@ -33,12 +33,16 @@ def simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost):
 
 st.set_page_config(page_title="Life360 Forecast Copilot", layout="wide")
 
+# --- Header with Life360 logo ---
 st.markdown("""
-    <h1 style='color:#7C3AED; font-size: 36px;'>Life360 Forecast Copilot</h1>
-    <p style='font-size: 16px;'>Interactive forecasting model with AI-powered scenario insights.</p>
+    <div style='display: flex; align-items: center; justify-content: space-between; background-color: #7C3AED; padding: 1rem 2rem; border-radius: 8px; margin-bottom: 1rem;'>
+        <img src='https://cdn.life360.com/img/Life360_Logo.png' alt='Life360 Logo' style='height: 48px;'>
+        <h1 style='color: white; font-size: 28px; margin: 0;'>Forecast Copilot Dashboard</h1>
+    </div>
 """, unsafe_allow_html=True)
 
-st.sidebar.header("Adjust Forecast Assumptions")
+# --- Sidebar ---
+st.sidebar.header("Forecast Assumptions")
 start_subs = st.sidebar.number_input("Starting Subscribers", value=50000)
 growth = st.sidebar.slider("Monthly Growth Rate (%)", 0.0, 10.0, 5.0) / 100
 churn = st.sidebar.slider("Churn Rate (%)", 0.0, 10.0, 5.0) / 100
@@ -48,28 +52,39 @@ fixed_cost = st.sidebar.number_input("Fixed Monthly Cost ($)", value=500000.0)
 
 df = simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost)
 
+# --- KPI Metrics ---
+st.markdown("<div style='background-color: #EDE9FE; padding: 1rem; border-radius: 10px; margin-top: 1rem;'>", unsafe_allow_html=True)
 st.subheader("Key Financial Metrics")
 col1, col2, col3 = st.columns(3)
 col1.metric("Total Revenue", f"${df['Revenue'].sum():,.0f}")
 col2.metric("Total Profit", f"${df['Profit'].sum():,.0f}")
 col3.metric("Ending Subscribers", f"{int(df['Subscribers'].iloc[-1]):,}")
+st.markdown("</div>", unsafe_allow_html=True)
 
+# --- Chart ---
+st.markdown("<div style='background-color: #F9FAFB; padding: 1rem; border-radius: 10px; margin-top: 1rem;'>", unsafe_allow_html=True)
 st.subheader("Monthly Revenue and Profit")
-fig, ax = plt.subplots(figsize=(8, 4))  # ✅ Smaller graph size
+fig, ax = plt.subplots(figsize=(8, 4))
 ax.plot(df["Month"], df["Revenue"], label="Revenue", color="#7C3AED")
 ax.plot(df["Month"], df["Profit"], label="Profit", color="#4B5563")
 plt.xticks(rotation=45)
 ax.legend()
 st.pyplot(fig)
+st.markdown("</div>", unsafe_allow_html=True)
 
-st.subheader("Monthly Forecast Data")
+# --- Data Table ---
+st.markdown("<div style='margin-top: 1rem;'>", unsafe_allow_html=True)
+st.subheader("Monthly Forecast Table")
 formatted_df = df.copy()
 dollar_cols = ["Revenue", "Variable Costs", "Fixed Costs", "Total Costs", "Profit"]
 for col in dollar_cols:
-    formatted_df[col] = formatted_df[col].map("${:,.2f}".format)  # ✅ Format $ cols
+    formatted_df[col] = formatted_df[col].map("${:,.2f}".format)
 st.dataframe(formatted_df)
+st.markdown("</div>", unsafe_allow_html=True)
 
-st.subheader("Forecast Copilot")
+# --- AI Forecast Copilot ---
+st.markdown("<div style='margin-top: 2rem;'>", unsafe_allow_html=True)
+st.subheader("AI Forecast Copilot")
 
 user_prompt = st.text_input("Ask a forecasting question (e.g. 'What happens if churn increases to 8% in Q3?')")
 
@@ -96,14 +111,19 @@ if user_prompt:
                 ]
             )
 
-            st.write(response.choices[0].message.content)
+            st.success(response.choices[0].message.content)
 
         except openai.RateLimitError:
             st.error("Rate limit reached. Please try again shortly.")
         except Exception as e:
             st.error(f"An error occurred: {e}")
 
+st.markdown("</div>", unsafe_allow_html=True)
+
+# --- Footer ---
 st.markdown("""
     <hr style="margin-top: 30px;">
-<p style='text-align: right; font-size: 13px; color: #999999;'>For Life360 — made by Sharan Karunaagaran</p>
+    <div style='text-align: right; font-size: 13px; color: #999999;'>
+        For Life360 — made by Sharan Karunaagaran
+    </div>
 """, unsafe_allow_html=True)
