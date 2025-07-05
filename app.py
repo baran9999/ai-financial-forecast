@@ -55,6 +55,10 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# --- Page Setup ---
+st.set_page_config(page_title="Life360 Forecast Copilot", layout="wide")
+st.markdown("<h1 style='color:#7C3AED; font-size:32px;'>Forecast Copilot Dashboard</h1>", unsafe_allow_html=True)
+
 # --- Forecast Function ---
 def simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost):
     months = pd.date_range("2025-01-01", periods=12, freq='MS')
@@ -82,10 +86,6 @@ def simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost):
 
     return pd.DataFrame(data)
 
-# --- Page Setup ---
-st.set_page_config(page_title="Life360 Forecast Copilot", layout="wide")
-st.markdown("<h1 style='color:#7C3AED; font-size:32px;'>Forecast Copilot Dashboard</h1>", unsafe_allow_html=True)
-
 # --- Sidebar Inputs ---
 st.sidebar.header("Forecast Assumptions")
 start_subs = st.sidebar.number_input("Starting Subscribers", value=50000)
@@ -98,7 +98,7 @@ fixed_cost = st.sidebar.number_input("Fixed Monthly Cost ($)", value=500000.0)
 # --- Generate Forecast ---
 df = simulate_forecast(start_subs, growth, churn, price, var_cost, fixed_cost)
 
-# --- Key Metrics ---
+# --- KPI Metrics ---
 st.markdown("<div style='background-color: #EDE9FE; padding: 1rem; border-radius: 10px; margin-top: 1rem;'>", unsafe_allow_html=True)
 st.subheader("Key Financial Metrics")
 col1, col2, col3 = st.columns(3)
@@ -107,7 +107,7 @@ col2.metric("Total Profit", f"${df['Profit'].sum():,.0f}")
 col3.metric("Ending Subscribers", f"{int(df['Subscribers'].iloc[-1]):,}")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# --- Chart Section with Expander ---
+# --- Chart Section with Expandable Toggle ---
 st.markdown("<div class='chart-container' style='background-color: #F9FAFB; padding: 1rem; border-radius: 10px; margin-top: 1rem;'>", unsafe_allow_html=True)
 st.subheader("Monthly Revenue and Profit")
 with st.expander("Click to view chart"):
@@ -120,7 +120,7 @@ with st.expander("Click to view chart"):
 st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Forecast Table ---
-st.markdown("<div style='margin-top: 1rem;'>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top: 1rem; max-width: 100%;'>", unsafe_allow_html=True)
 st.subheader("Monthly Forecast Table")
 formatted_df = df.copy()
 dollar_cols = ["Revenue", "Variable Costs", "Fixed Costs", "Total Costs", "Profit"]
