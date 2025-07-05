@@ -129,7 +129,11 @@ if user_prompt:
     with st.spinner("Generating AI insight..."):
         try:
             prompt = f"""
-            You are an AI financial analyst. Provide a professional forecast insight based on:
+            You are an AI financial analyst at Life360.
+            Respond with sharp, executive-style insights only.
+            No explanations. No formulas. Just forecast implications.
+
+            Current assumptions:
             - Starting Subscribers: {start_subs}
             - Monthly Growth Rate: {growth:.2%}
             - Monthly Churn Rate: {churn:.2%}
@@ -143,7 +147,7 @@ if user_prompt:
             response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
-                    {"role": "system", "content": "You're a financial forecasting assistant."},
+                    {"role": "system", "content": "You're a financial forecasting assistant. Always reply like an internal Life360 analyst: sharp, minimal, focused."},
                     {"role": "user", "content": prompt}
                 ]
             )
