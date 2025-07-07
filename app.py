@@ -123,33 +123,34 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<div style='margin-top: 2rem;'>", unsafe_allow_html=True)
 st.subheader("AI Forecast Copilot")
 
-user_prompt = st.text_input("Ask a forecasting question (e.g. 'What happens if churn increases to 8% in Q3?')")
+user_prompt = st.text_input("Ask a forecasting question (e.g. 'How would an 8% churn affect 2025 net profit?')")
 
 if user_prompt:
     with st.spinner("Generating AI insight..."):
         try:
             prompt = f"""
-            You are an AI financial analyst. Provide a professional forecast insight based on:
-            You are an AI financial analyst at Life360.
-            Respond with sharp, executive-style insights only.
-            No explanations. No formulas. Just forecast implications.
+            You're an internal financial forecasting assistant at Life360.
+            Use the current model assumptions and business context to deliver sharp, executive-ready insights.
 
-            Current assumptions:
+            Key assumptions:
             - Starting Subscribers: {start_subs}
             - Monthly Growth Rate: {growth:.2%}
             - Monthly Churn Rate: {churn:.2%}
-            - Price: ${price}
-            - Variable Cost per Sub: ${var_cost}
+            - Subscription Price: ${price}
+            - Variable Cost per Subscriber: ${var_cost}
             - Fixed Monthly Cost: ${fixed_cost}
 
+            Company context: Life360 is a location-based service platform generating revenue primarily from subscription services. The goal is to optimize unit economics, grow subscriber base, and expand profitability. Use this lens to assess the question.
+
             Question: {user_prompt}
+
+            Keep it brief, focused, and aligned with internal Life360 financial reporting tone.
             """
 
             response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
-                    {"role": "system", "content": "You're a financial forecasting assistant."},
-                    {"role": "system", "content": "You're a financial forecasting assistant. Always reply like an internal Life360 analyst: sharp, minimal, focused."},
+                    {"role": "system", "content": "You are a financial forecasting assistant trained on Life360 context."},
                     {"role": "user", "content": prompt}
                 ]
             )
